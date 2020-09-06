@@ -38,6 +38,11 @@ make install
 ./avalon verify <public-key file> <file or directory> <signarure>
 ```
 
+#### Print Locs for file or directory of files
+
+```bash
+./avalon loc <file or directory>
+```
 
 ### TODO
 * Create types for files types(Sol, Rs, Go, Js etc)
