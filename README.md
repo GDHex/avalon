@@ -41,7 +41,7 @@ make install
 #### Print Locs for file or directory of files
 
 ```bash
-./avalon loc <file or directory>
+./avalon loc <directory>
 ```
 
 ### TODO

@@ -11,7 +11,7 @@ import (
 // keysCmd represents the keys command
 var locCmd = &cobra.Command{
 	Use:   "loc",
-	Short: "Loc will return lines of code of the codebase",
+	Short: "Loc will return lines of code of the codebase in directory",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		getLoc(args)
@@ -32,6 +32,6 @@ func getLoc(args []string) {
 	command := exec.Command("bash", "-c", "/usr/bin/find "+input+" -name '*.sol' | xargs wc -l | sort -nr")
 	stdout, err := command.Output()
 	utils.Check(err, "Error: trying to run command")
-	fmt.Println("Printing out loc for sol file or files in directory")
+	fmt.Println("Printing out loc for sol files in directory")
 	fmt.Println(string(stdout))
 }
