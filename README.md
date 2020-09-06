@@ -43,7 +43,7 @@ make install
 ### Info
 
 ``` bash
-Welcome to Avalon is a tool to help auditors certify audits
+Welcome to Avalon, a tool to help auditors certify audits
 
 Usage:
   avalon [command]
@@ -52,8 +52,8 @@ Available Commands:
   gen-keys    Gen-keys will return a ed25519 keypair
   help        Help about any command
   loc         Loc will return lines of code of the codebase in directory
-  sign        Sign a collection of data with a signature
-  verify      Verify a signature against public key and data
+  sign        Create a signature from a collection of data signed with a private key
+  verify      Verify a signature against a public key and data
 
 Flags:
       --config string   config file (default is $HOME/.avalon.yaml)
