@@ -7,7 +7,7 @@
 ## Disclaimer
 This is a WIP and could be buggy. For the moment it will work with any file for sigle file signing and with sol files in directory mode.
 
-## Usage
+## Getting Started
 
 ### Install by cloning the repo and running make install
 
@@ -38,6 +38,29 @@ make install
 
 ```bash
 ./avalon loc <directory>
+```
+
+### Info
+
+``` bash
+Welcome to Avalon is a tool to help auditors certify audits
+
+Usage:
+  avalon [command]
+
+Available Commands:
+  gen-keys    Gen-keys will return a ed25519 keypair
+  help        Help about any command
+  loc         Loc will return lines of code of the codebase in directory
+  sign        Sign a collection of data with a signature
+  verify      Verify a signature against public key and data
+
+Flags:
+      --config string   config file (default is $HOME/.avalon.yaml)
+  -h, --help            help for avalon
+  -t, --toggle          Help message for toggle
+
+Use "avalon [command] --help" for more information about a command.
 ```
 
 ### TODO
