@@ -15,7 +15,7 @@ var cfgFile string
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "avalon",
-	Short: "Welcome to Avalon is a tool to help auditors certify audits",
+	Short: "Welcome to Avalon, a tool to help auditors certify audits",
 	Long:  ``,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:

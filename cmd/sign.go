@@ -14,7 +14,7 @@ import (
 // signCmd represents the sign command
 var signCmd = &cobra.Command{
 	Use:   "sign",
-	Short: "Sign a collection of data with a signature",
+	Short: "Create a signature from a collection of data signed with a private key",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		sign(args)

@@ -14,7 +14,7 @@ import (
 // verifyCmd represents the verify command
 var verifyCmd = &cobra.Command{
 	Use:   "verify",
-	Short: "Verify a signature against public key and data",
+	Short: "Verify a signature against a public key and data",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		verify(args)

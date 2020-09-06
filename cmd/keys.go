@@ -14,7 +14,7 @@ import (
 var keysCmd = &cobra.Command{
 	Use:   "gen-keys",
 	Short: "Gen-keys will return a ed25519 keypair",
-	Long: `Gen-keys returns a new keypair and stores it into 2 files, argument is the name 
+	Long: `Gen-keys returns a new keypair and stores it into 2 files under the keys folder, argument is the name 
 	of the user and its added as a prefix for the generated files`,
 	Run: func(cmd *cobra.Command, args []string) {
 		getKeyPair(args)
