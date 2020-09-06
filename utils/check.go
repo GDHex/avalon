@@ -11,5 +11,6 @@ func Check(err error, msg string) {
 		return
 	}
 	fmt.Println(msg)
+	fmt.Println(err)
 	os.Exit(1)
 }

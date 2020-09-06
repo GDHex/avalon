@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -42,16 +43,19 @@ func verify(args []string) {
 	var msg []byte
 	switch mode := fi.Mode(); {
 	case mode.IsDir():
+		fmt.Println("Found directory")
 		dir, errd := ioutil.ReadDir(input)
 		utils.Check(errd, "Error: trying to read directory")
 		for _, file := range dir {
-			b, errb := ioutil.ReadFile(file.Name())
-			utils.Check(errb, "Error: trying to read directory files")
-			msg = append(msg[:], b...)
+			if strings.Contains(file.Name(), ".sol") || strings.Contains(file.Name(), ".pdf") {
+				fmt.Println("Found sol file: ", input+file.Name())
+				b, errb := ioutil.ReadFile(input + file.Name())
+				utils.Check(errb, "Error: trying to read from files in the directory")
+				msg = append(msg[:], b...)
+			}
 		}
-		fmt.Println("Directory")
 	case mode.IsRegular():
-		fmt.Println("File")
+		fmt.Println("Found single file")
 		msg, err = ioutil.ReadFile(input)
 		utils.Check(err, "Error: trying to read file to sign")
 	}
