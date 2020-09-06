@@ -7,38 +7,34 @@
 ## Disclaimer
 This is a WIP and could be buggy. For the moment it will work with any file for sigle file signing and with sol files in directory mode.
 
-## Instalation 
-
-``` bash
-go get github.com/GDHex/avalon
-```
-
 ## Usage
 
-#### Install by running make install
+### Install by cloning the repo and running make install
 
 ```bash
+git clone https://github.com/GDHex/avalon.git
+cd avalon
 make install
 ```
 
-#### Create a new key pair with the gen-keys flag and a name for your keypair
+### Create a new key pair with the gen-keys flag and a name for your keypair
 ```bash
 ./avalon gen-keys <name>
 ```
 
-#### Create a signature from a bundle of data
+### Create a signature from a bundle of data
 
 ```bash
 ./avalon sign <private-key file> <file or directory> 
 ```
 
-#### Verify the signature 
+### Verify the signature 
 
 ```bash
 ./avalon verify <public-key file> <file or directory> <signarure>
 ```
 
-#### Print Locs for file or directory of files
+### Print Locs for file or directory of files
 
 ```bash
 ./avalon loc <directory>
