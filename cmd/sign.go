@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"avalon/utils"
 	"crypto/ed25519"
 	"fmt"
 	"io/ioutil"
@@ -31,14 +32,28 @@ func sign(args []string) {
 	var privKey ed25519.PrivateKey
 	var err error
 	privKey, err = ioutil.ReadFile(args[0])
-	if err != nil {
-		fmt.Println("Error: trying to read private key file")
-		os.Exit(1)
-	}
-	bytecode, errb := ioutil.ReadFile(args[1])
-	if errb != nil {
-		fmt.Println("Error: trying to read file to sign")
-		os.Exit(1)
+	utils.Check(err, "Error: trying to read private key file")
+
+	input := args[1]
+	fi, err := os.Stat(input)
+	utils.Check(err, "Error: trying to parse the file or directory name")
+
+	var bytecode []byte
+	switch mode := fi.Mode(); {
+	case mode.IsDir():
+		fmt.Println("Directory")
+		fmt.Println(input)
+		dir, errd := ioutil.ReadDir(input)
+		utils.Check(errd, "Error: trying to read directory")
+		for _, file := range dir {
+			b, errb := ioutil.ReadFile(file.Name())
+			utils.Check(errb, "Error: trying to read directory files")
+			bytecode = append(bytecode[:], b...)
+		}
+	case mode.IsRegular():
+		fmt.Println("File")
+		bytecode, err = ioutil.ReadFile(input)
+		utils.Check(err, "Error: trying to read file to sign")
 	}
 
 	sig := ed25519.Sign(privKey, bytecode)
@@ -47,9 +62,6 @@ func sign(args []string) {
 	fmt.Printf("Signature: %x \n", sig)
 
 	err = ioutil.WriteFile("tests/sig.sec", sig, 0644)
-	if err != nil {
-		fmt.Println("Error:  trying to write sig file")
-		os.Exit(1)
-	}
+	utils.Check(err, "Error:  trying to write sig file")
 	fmt.Println("Done with signing the data")
 }

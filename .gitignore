@@ -1,3 +1,4 @@
-/tests
+tests
 *.sh
 avalon
+keys

@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"avalon/utils"
 	"crypto/ed25519"
 	"fmt"
 	"io/ioutil"
@@ -12,13 +13,8 @@ import (
 // verifyCmd represents the verify command
 var verifyCmd = &cobra.Command{
 	Use:   "verify",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Verify a signature against public key and data",
+	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		verify(args)
 	},
@@ -31,26 +27,37 @@ func init() {
 func verify(args []string) {
 	if len(args) < 2 {
 		fmt.Println("Error: Please provide some arguments")
-		os.Exit(1)
+		return
 	}
 	var pubKey ed25519.PublicKey
 	var err error
 	pubKey, err = ioutil.ReadFile(args[0])
-	if err != nil {
-		fmt.Println("Error: Cant read public key file")
-		os.Exit(1)
-	}
+	utils.Check(err, "Error: Cant read public key file")
+
 	fmt.Printf("Public Key: %x \n", pubKey)
-	msg, err := ioutil.ReadFile(args[1])
-	if err != nil {
-		fmt.Println("Error: Cant read data file")
-		os.Exit(1)
+	input := args[1]
+	fi, err := os.Stat(input)
+	utils.Check(err, "Error: trying to parse the file or directory name")
+
+	var msg []byte
+	switch mode := fi.Mode(); {
+	case mode.IsDir():
+		dir, errd := ioutil.ReadDir(input)
+		utils.Check(errd, "Error: trying to read directory")
+		for _, file := range dir {
+			b, errb := ioutil.ReadFile(file.Name())
+			utils.Check(errb, "Error: trying to read directory files")
+			msg = append(msg[:], b...)
+		}
+		fmt.Println("Directory")
+	case mode.IsRegular():
+		fmt.Println("File")
+		msg, err = ioutil.ReadFile(input)
+		utils.Check(err, "Error: trying to read file to sign")
 	}
+
 	sig, err := ioutil.ReadFile(args[2])
-	if err != nil {
-		fmt.Println("Error: Cant read signature file")
-		os.Exit(1)
-	}
+	utils.Check(err, "Error: Cant read signature file")
 	fmt.Printf("Signature: %x \n", sig)
 	out := ed25519.Verify(pubKey, msg, sig)
 	fmt.Println("Is this signature valid? -> ", out)
