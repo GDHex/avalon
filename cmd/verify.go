@@ -1,22 +1,10 @@
-/*
-Copyright © 2020 Georgios Delkos georgios.delkos@certik.io
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 package cmd
 
 import (
+	"crypto/ed25519"
 	"fmt"
+	"io/ioutil"
+	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -32,20 +20,38 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("verify called")
+		verify(args)
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(verifyCmd)
+}
 
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// verifyCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// verifyCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+func verify(args []string) {
+	if len(args) < 2 {
+		fmt.Println("Error: Please provide some arguments")
+		os.Exit(1)
+	}
+	var pubKey ed25519.PublicKey
+	var err error
+	pubKey, err = ioutil.ReadFile(args[0])
+	if err != nil {
+		fmt.Println("Error: Cant read public key file")
+		os.Exit(1)
+	}
+	fmt.Printf("Public Key: %x \n", pubKey)
+	msg, err := ioutil.ReadFile(args[1])
+	if err != nil {
+		fmt.Println("Error: Cant read data file")
+		os.Exit(1)
+	}
+	sig, err := ioutil.ReadFile(args[2])
+	if err != nil {
+		fmt.Println("Error: Cant read signature file")
+		os.Exit(1)
+	}
+	fmt.Printf("Signature: %x \n", sig)
+	out := ed25519.Verify(pubKey, msg, sig)
+	fmt.Println("Is this signature valid? -> ", out)
 }

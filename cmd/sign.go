@@ -1,33 +1,18 @@
-/*
-Copyright © 2020 Georgios Delkos georgios.delkos@certik.io
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 package cmd
 
 import (
-	"crypto/rand"
+	"crypto/ed25519"
 	"fmt"
+	"io/ioutil"
 	"os"
 
 	"github.com/spf13/cobra"
-	"github.com/vuvuzela/crypto/bls"
 )
 
 // signCmd represents the sign command
 var signCmd = &cobra.Command{
 	Use:   "sign",
-	Short: "Sign a collection of data with BLS signature",
+	Short: "Sign a collection of data with a signature",
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 		sign(args)
@@ -39,16 +24,32 @@ func init() {
 }
 
 func sign(args []string) {
-	addr := []byte(args[0])
-	bytecode := make([]byte, 64)
-	combine := append(addr[:], bytecode[:]...)
-	pub, priv, err := bls.GenerateKey(rand.Reader)
-	if err != nil {
-		fmt.Println("Error generating new key pair")
+	if len(args) < 1 {
+		fmt.Println("Error: Please provide at least 2 arguments")
 		os.Exit(1)
 	}
-	fmt.Printf("Public Key: %v \n", pub)
-	fmt.Printf("Private Key: %p \n", priv)
-	sig := bls.Sign(priv, combine)
-	fmt.Printf("This is the produced signature: %x", sig)
+	var privKey ed25519.PrivateKey
+	var err error
+	privKey, err = ioutil.ReadFile(args[0])
+	if err != nil {
+		fmt.Println("Error: trying to read private key file")
+		os.Exit(1)
+	}
+	bytecode, errb := ioutil.ReadFile(args[1])
+	if errb != nil {
+		fmt.Println("Error: trying to read file to sign")
+		os.Exit(1)
+	}
+
+	sig := ed25519.Sign(privKey, bytecode)
+	fmt.Printf("Private Key: %x \n", privKey)
+	fmt.Printf("Public Key: %x \n", privKey.Public())
+	fmt.Printf("Signature: %x \n", sig)
+
+	err = ioutil.WriteFile("tests/sig.sec", sig, 0644)
+	if err != nil {
+		fmt.Println("Error:  trying to write sig file")
+		os.Exit(1)
+	}
+	fmt.Println("Done with signing the data")
 }

@@ -1,23 +1,9 @@
-/*
-Copyright © 2020 Georgios Delkos georgios.delkos@certik.io
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 package cmd
 
 import (
 	"crypto/rand"
 	"fmt"
+	"io/ioutil"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -26,9 +12,10 @@ import (
 
 // keysCmd represents the keys command
 var keysCmd = &cobra.Command{
-	Use:   "keys",
-	Short: "Keys will return a ed25519 keypair",
-	Long:  ``,
+	Use:   "gen-keys",
+	Short: "Gen-keys will return a ed25519 keypair",
+	Long: `Gen-keys returns a new keypair and stores it into 2 files, argument is the name 
+	of the user and its added as a prefix for the generated files`,
 	Run: func(cmd *cobra.Command, args []string) {
 		getKeyPair(args)
 	},
@@ -40,11 +27,27 @@ func init() {
 }
 
 func getKeyPair(args []string) {
-	pub, priv, err := ed25519.GenerateKey(rand.Reader)
-	if err != nil {
-		fmt.Println("Error generating keypair")
+	if len(args) == 0 {
+		fmt.Println("Error: please provide a name for the keys")
 		os.Exit(1)
 	}
-	fmt.Printf("Public Key: %X \n", pub)
-	fmt.Printf("Private Key: %X \n", priv)
+	name := args[0]
+	pub, priv, err := ed25519.GenerateKey(rand.Reader)
+	if err != nil {
+		fmt.Println("Error: generating keypair")
+		os.Exit(1)
+	}
+	err = ioutil.WriteFile("tests/"+name+"_pblk.sec", pub, 0644)
+	if err != nil {
+		fmt.Println("Error: trying to write public key file")
+		os.Exit(1)
+	}
+	err = ioutil.WriteFile("tests/"+name+"_prvk.sec", priv, 0644)
+	if err != nil {
+		fmt.Println("Error: trying to write private key file")
+		os.Exit(1)
+	}
+	fmt.Println("Done! Keys are saved for user: ", name)
+	fmt.Printf("Public Key: %x \n", pub)
+	fmt.Printf("Private Key: %x \n", priv)
 }

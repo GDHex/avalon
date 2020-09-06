@@ -10,5 +10,5 @@ require (
 	github.com/vuvuzela/crypto v0.0.0-20190327123840-80a93a3ed1d6
 	golang.org/x/crypto v0.0.0-20191011191535-87dc89f01550
 	mvdan.cc/unparam v0.0.0-20200501210554-b37ab49443f7 // indirect
-	vuvuzela.io/crypto v0.0.0-20190327123840-80a93a3ed1d6 // indirect
+	vuvuzela.io/crypto v0.0.0-20190327123840-80a93a3ed1d6
 )
