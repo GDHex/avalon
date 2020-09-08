@@ -46,10 +46,10 @@ make install
 ./avalon serve <port>
 ```
 
-### Show returns the private and public keys in a human readable form
+### Show returns the private and public keys for the username given in a human readable form
 
 ```bash
-./avalon show <public key file> <private key file>
+./avalon show <name>
 ```
 
 

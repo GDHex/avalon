@@ -44,19 +44,19 @@ func verify(args []string) {
 	var msg []byte
 	switch mode := fi.Mode(); {
 	case mode.IsDir():
-		color.Green("Found directory")
+		color.HiYellow("Info: Found directory")
 		dir, errd := ioutil.ReadDir(input)
 		utils.Check(errd, "Error: trying to read directory")
 		for _, file := range dir {
 			if strings.Contains(file.Name(), ".sol") || strings.Contains(file.Name(), ".pdf") {
-				color.Green("Found sol file: ", input+file.Name())
+				color.HiYellow("Info: Found sol file: ", input+file.Name())
 				b, errb := ioutil.ReadFile(input + file.Name())
 				utils.Check(errb, "Error: trying to read from files in the directory")
 				msg = append(msg[:], b...)
 			}
 		}
 	case mode.IsRegular():
-		color.Green("Found single file")
+		color.HiYellow("Info: Found single file")
 		msg, err = ioutil.ReadFile(input)
 		utils.Check(err, "Error: trying to read file to sign")
 	}
@@ -74,5 +74,9 @@ func printVerifyIntro() {
 
 func printVerifyOutro(sig []byte, valid bool) {
 	color.HiBlue("Signature: %x \n", sig)
-	color.HiGreen("Is this signature valid? -> ", valid)
+	if valid {
+		color.HiGreen("Result: Success on validating this signature against data and public key")
+		return
+	}
+	color.Red("Result: Failure to validate the signature against data and public key")
 }
