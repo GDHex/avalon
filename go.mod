@@ -4,6 +4,7 @@ go 1.15
 
 require (
 	github.com/davecgh/go-spew v1.1.1
+	github.com/fatih/color v1.9.0
 	github.com/gofiber/fiber v1.14.5
 	github.com/gorilla/schema v1.2.0 // indirect
 	github.com/klauspost/compress v1.10.11 // indirect

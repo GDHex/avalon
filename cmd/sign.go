@@ -3,11 +3,11 @@ package cmd
 import (
 	"avalon/utils"
 	"crypto/ed25519"
-	"fmt"
 	"io/ioutil"
 	"os"
 	"strings"
 
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
 
@@ -27,7 +27,7 @@ func init() {
 
 func sign(args []string) {
 	if len(args) < 1 {
-		fmt.Println("Error: Please provide at least 2 arguments")
+		color.Red("Error: Please provide at least 2 arguments")
 		os.Exit(1)
 	}
 	var privKey ed25519.PrivateKey
@@ -42,29 +42,29 @@ func sign(args []string) {
 	var bytecode []byte
 	switch mode := fi.Mode(); {
 	case mode.IsDir():
-		fmt.Println("Found directory")
+		color.Green("Found directory")
 		dir, errd := ioutil.ReadDir(input)
 		utils.Check(errd, "Error: trying to read directory")
 		for _, file := range dir {
 			if strings.Contains(file.Name(), ".sol") || strings.Contains(file.Name(), ".pdf") {
-				fmt.Println("Found sol file: ", input+file.Name())
+				color.Green("Found sol file: ", input+file.Name())
 				b, errb := ioutil.ReadFile(input + file.Name())
 				utils.Check(errb, "Error: trying to read from files in the directory")
 				bytecode = append(bytecode[:], b...)
 			}
 		}
 	case mode.IsRegular():
-		fmt.Println("Found single file")
+		color.Green("Found single file")
 		bytecode, err = ioutil.ReadFile(input)
 		utils.Check(err, "Error: trying to read file to sign")
 	}
 
 	sig := ed25519.Sign(privKey, bytecode)
-	fmt.Printf("Private Key: %x \n", privKey)
-	fmt.Printf("Public Key: %x \n", privKey.Public())
-	fmt.Printf("Signature: %x \n", sig)
+	color.HiBlue("Private Key: %x \n", privKey)
+	color.HiBlue("Public Key: %x \n", privKey.Public())
+	color.HiBlue("Signature: %x \n", sig)
 
 	err = ioutil.WriteFile("tests/sig.sec", sig, 0644)
 	utils.Check(err, "Error:  trying to write sig file")
-	fmt.Println("Done with signing the data")
+	color.Green("Done with signing the data")
 }
