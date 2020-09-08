@@ -58,13 +58,22 @@ func sign(args []string) {
 		bytecode, err = ioutil.ReadFile(input)
 		utils.Check(err, "Error: trying to read file to sign")
 	}
-
+	printSignIntro()
 	sig := ed25519.Sign(privKey, bytecode)
-	color.HiBlue("Private Key: %x \n", privKey)
-	color.HiBlue("Public Key: %x \n", privKey.Public())
-	color.HiBlue("Signature: %x \n", sig)
 
 	err = ioutil.WriteFile("tests/sig.sec", sig, 0644)
 	utils.Check(err, "Error:  trying to write sig file")
 	color.Green("Done with signing the data")
+	printSignOutro(privKey, sig)
+}
+
+func printSignIntro() {
+	color.Green("Welcome to Avalon Sign tool")
+	color.Green("Signing data with given private key...")
+}
+
+func printSignOutro(priv ed25519.PrivateKey, sig []byte) {
+	color.HiBlue("Public Key: %x \n", priv.Public())
+	color.HiBlue("Private Key: %x \n", priv)
+	color.HiBlue("Signature: %x \n", sig)
 }

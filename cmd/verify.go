@@ -39,7 +39,7 @@ func verify(args []string) {
 	input := args[1]
 	fi, err := os.Stat(input)
 	utils.Check(err, "Error: trying to parse the file or directory name")
-
+	printVerifyIntro()
 	var msg []byte
 	switch mode := fi.Mode(); {
 	case mode.IsDir():
@@ -62,7 +62,16 @@ func verify(args []string) {
 
 	sig, err := ioutil.ReadFile(args[2])
 	utils.Check(err, "Error: Cant read signature file")
-	color.HiBlue("Signature: %x \n", sig)
 	out := ed25519.Verify(pubKey, msg, sig)
-	color.HiGreen("Is this signature valid? -> ", out)
+	printVerifyOutro(sig, out)
+}
+
+func printVerifyIntro() {
+	color.Green("Welcome to Avalon Verify tool")
+	color.Green("Verifying signature against data with given public key...")
+}
+
+func printVerifyOutro(sig []byte, valid bool) {
+	color.HiBlue("Signature: %x \n", sig)
+	color.HiGreen("Is this signature valid? -> ", valid)
 }

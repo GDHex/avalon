@@ -27,14 +27,15 @@ func init() {
 
 func newKeyPair(args []string) {
 	if len(args) == 0 {
-		color.Red("Error: please provide a name for the keys")
+		color.Red("Error: please provide one argument, a name for the keypair")
 		return
 	}
-	color.HiGreen("Welcome to Avalon Keypair Generator")
-	color.HiGreen("Creating ed25519 keypair...")
+	printIntro()
+
 	name := args[0]
 	pub, priv, err := ed25519.GenerateKey(rand.Reader)
 	utils.Check(err, "Error: generating keypair")
+
 	if ioutil.ReadFile("keys/" + name + "_pblk.sec"); err == nil {
 		color.Red("Error: File already exists, please provide a different name for the keypair")
 		return
@@ -51,6 +52,15 @@ func newKeyPair(args []string) {
 	err = ioutil.WriteFile("keys/"+name+"_prvk.sec", priv, 0644)
 	utils.Check(err, "Error: trying to write private key file")
 
+	printOutro(pub, priv)
+}
+
+func printIntro() {
+	color.HiGreen("Welcome to Avalon Keypair Generator")
+	color.HiGreen("Creating ed25519 keypair...")
+}
+
+func printOutro(pub ed25519.PublicKey, priv ed25519.PrivateKey) {
 	color.Green("Done! Keys are saved under keys folder")
 	color.Blue("Public Key: %x \n", pub)
 	color.Blue("Private Key: %x \n", priv)

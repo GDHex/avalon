@@ -2,9 +2,11 @@ package cmd
 
 import (
 	"avalon/utils"
+	"crypto/ed25519"
 	"fmt"
 	"io/ioutil"
 
+	"github.com/fatih/color"
 	"github.com/spf13/cobra"
 )
 
@@ -27,10 +29,22 @@ func show(args []string) {
 		fmt.Println("Please provide at least 2 arguments")
 		return
 	}
+	printShowIntro()
+
 	pubKey, err := ioutil.ReadFile(args[0])
 	utils.Check(err, "Error: trying to read the public key file")
 	privKey, errp := ioutil.ReadFile(args[1])
 	utils.Check(errp, "Error: trying to read the public key file")
-	fmt.Printf("Public Key: %x \n", pubKey)
-	fmt.Printf("Private Key: %x \n", privKey)
+
+	printShowOutro(pubKey, privKey)
+}
+
+func printShowIntro() {
+	color.Green("Welcome to Avalon keypair show tool")
+	color.Green("Loading keypair from file...")
+}
+
+func printShowOutro(pub ed25519.PublicKey, priv ed25519.PrivateKey) {
+	color.HiBlue("Public Key: %x \n", pub)
+	color.HiBlue("Private Key: %x \n", priv)
 }
