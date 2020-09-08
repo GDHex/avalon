@@ -36,7 +36,7 @@ func newKeyPair(args []string) {
 	pub, priv, err := ed25519.GenerateKey(rand.Reader)
 	utils.Check(err, "Error: generating keypair")
 
-	if ioutil.ReadFile("keys/" + name + "_pblk.sec"); err == nil {
+	if utils.FileExists("keys/" + name + "_pblk.sec") {
 		color.Red("Error: File already exists, please provide a different name for the keypair")
 		return
 	}
@@ -44,7 +44,7 @@ func newKeyPair(args []string) {
 	err = ioutil.WriteFile("keys/"+name+"_pblk.sec", pub, 0644)
 	utils.Check(err, "Error: trying to write public key file")
 
-	if ioutil.ReadFile("keys/" + name + "_prvk.sec"); err == nil {
+	if utils.FileExists("keys/" + name + "_prvk.sec") {
 		color.Red("Error: File already exists, please provide a different name for the keypair")
 		return
 	}
