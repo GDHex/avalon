@@ -61,7 +61,7 @@ func sign(args []string) {
 	printSignIntro()
 	sig := ed25519.Sign(privKey, bytecode)
 
-	err = ioutil.WriteFile("tests/sig.sec", sig, 0644)
+	err = ioutil.WriteFile("signatures/sig.sec", sig, 0644)
 	utils.Check(err, "Error:  trying to write sig file")
 	color.Green("Done with signing the data")
 	printSignOutro(privKey, sig)

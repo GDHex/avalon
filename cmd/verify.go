@@ -30,6 +30,7 @@ func verify(args []string) {
 		color.Red("Error: Please provide some arguments")
 		return
 	}
+	printVerifyIntro()
 	var pubKey ed25519.PublicKey
 	var err error
 	pubKey, err = ioutil.ReadFile(args[0])
@@ -39,7 +40,7 @@ func verify(args []string) {
 	input := args[1]
 	fi, err := os.Stat(input)
 	utils.Check(err, "Error: trying to parse the file or directory name")
-	printVerifyIntro()
+
 	var msg []byte
 	switch mode := fi.Mode(); {
 	case mode.IsDir():
