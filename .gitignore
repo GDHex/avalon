@@ -2,3 +2,4 @@ tests
 *.sh
 avalon
 keys
+signatures
