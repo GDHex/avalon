@@ -35,7 +35,7 @@ type payload struct {
 
 func serve(args []string) {
 	if len(args) != 1 {
-		fmt.Println("Please provide a argument for port")
+		utils.PrintItems("error", "Please provide a argument for port")
 		return
 	}
 	app := fiber.New()
@@ -43,7 +43,7 @@ func serve(args []string) {
 	app.Post("/verify", func(c *fiber.Ctx) {
 		if form, err := c.MultipartForm(); err == nil {
 			if form.File["pubkey"] == nil || form.File["sig"] == nil || form.File["data"] == nil {
-				fmt.Println("Please provide all the data needed to procced")
+				utils.PrintItems("error", "Please provide all the data needed to procced")
 				return
 			}
 			publicKeyHeader := form.File["pubkey"]
@@ -71,7 +71,6 @@ func serve(args []string) {
 				return
 			}
 			b := ed25519.Verify(publicKey, data, signature)
-			fmt.Println("Is the signature valid: ", b)
 			c.Send("Is the signature valid: ", b)
 		}
 

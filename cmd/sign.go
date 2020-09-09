@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"avalon/params"
 	"avalon/utils"
 	"crypto/ed25519"
 	"io/ioutil"
@@ -27,54 +28,60 @@ func init() {
 
 func sign(args []string) {
 	if len(args) != 2 {
-		color.Red("Error: Please provide two arguments, the private key file and the data to sign")
-		os.Exit(1)
+		utils.PrintItems("error", "Please provide two arguments, the private key file and the data to sign")
+		return
 	}
 	printSignIntro()
 	var privKey ed25519.PrivateKey
 	var err error
 	privKey, err = ioutil.ReadFile(args[0])
-	utils.Check(err, "Error: trying to read private key file")
+	utils.Check(err, "Error: Trying to read private key file")
 
 	input := args[1]
 	fi, err := os.Stat(input)
-	utils.Check(err, "Error: trying to parse the file or directory name")
+	utils.Check(err, "Error: Trying to parse the file or directory name")
 
 	var bytecode []byte
 	switch mode := fi.Mode(); {
 	case mode.IsDir():
-		color.HiYellow("Info: Found directory")
+		utils.PrintItems("info", "Found directory")
 		dir, errd := ioutil.ReadDir(input)
 		utils.Check(errd, "Error: trying to read directory")
 		for _, file := range dir {
-			if strings.Contains(file.Name(), ".sol") || strings.Contains(file.Name(), ".pdf") { // TODO add types here
-				color.HiYellow("Info: Found sol file: ", input+file.Name())
+			if strings.Contains(file.Name(), params.Sol) || strings.Contains(file.Name(), params.Pdf) { // TODO add types here
+				utils.PrintItems("info", "Found sol file: "+file.Name())
 				b, errb := ioutil.ReadFile(input + file.Name())
 				utils.Check(errb, "Error: trying to read from files in the directory")
 				bytecode = append(bytecode[:], b...)
 			}
 		}
 	case mode.IsRegular():
-		color.HiYellow("Info: Found single file")
+		utils.PrintItems("info", "Found single file")
 		bytecode, err = ioutil.ReadFile(input)
 		utils.Check(err, "Error: trying to read file to sign")
 	}
 
 	sig := ed25519.Sign(privKey, bytecode)
-	name := strings.Split(input, ".pdf")
-	s := strings.TrimPrefix(name[0], "./data/") // Hack for now
+	name := strings.Split(input, params.Pdf)
+	s := strings.TrimPrefix(name[0], params.DirPrefix) // Hack for now
 
-	err = ioutil.WriteFile("./signatures/"+s+"_sig.sec", sig, 0644)
+	err = ioutil.WriteFile(params.SignatureDir+s+params.SignatureSuffix, sig, 0644)
 	utils.Check(err, "Error:  trying to write sig file")
-	color.Green("Done with signing the data")
-	printSignOutro(sig)
+
+	printSignOutro(len(bytecode), sig)
 }
 
 func printSignIntro() {
-	color.Green("Welcome to Avalon Sign tool")
-	color.Green("Signing data with given private key...")
+	utils.PrintItems("line", "---------------------------------------------------------------------------------")
+	utils.PrintItems("action", "                        Welcome to Avalon Sign tool")
+	utils.PrintItems("line", "---------------------------------------------------------------------------------")
+	utils.PrintItems("action", "Signing data with given private key...")
 }
 
-func printSignOutro(sig []byte) {
-	color.HiBlue("Signature: %x \n", sig)
+func printSignOutro(lenght int, sig []byte) {
+	color.HiBlue("Data lenght: %d", lenght)
+	color.HiCyan("Signature: %x \n", sig)
+	utils.PrintItems("line", "---------------------------------------------------------------------------------")
+	utils.PrintItems("success", "Done with signing the data")
+	utils.PrintItems("line", "---------------------------------------------------------------------------------")
 }

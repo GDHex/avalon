@@ -25,23 +25,27 @@ func init() {
 
 func getLoc(args []string) {
 	if len(args) != 1 {
-		color.Red("Error: please provide a name for the keys")
+		utils.PrintItems("error", "Please provide a name for the keys")
 		return
 	}
 	printLocIntro()
 	input := args[0]
-	command := exec.Command("bash", "-c", "/usr/bin/find "+input+" -name '*.sol' | xargs wc -l | sort -nr")
+	command := exec.Command("bash", "-c", "/usr/bin/find "+input+" -name '*.sol' | xargs wc -l | sort -nr") // Just sol for the moment
 	stdout, err := command.Output()
-	utils.Check(err, "Error: trying to run command")
+	utils.Check(err, "Error: Trying to run command")
 	printLocOutro(string(stdout))
 }
 
 func printLocIntro() {
-	color.Green("Welcome to Avalon lines of code counter")
+	utils.PrintItems("line", "---------------------------------------------------------------------------------")
+	color.Green("                                 Welcome to Avalon lines of code counter")
+	utils.PrintItems("line", "---------------------------------------------------------------------------------")
 	color.Green("Counting lines of code...")
 }
 
 func printLocOutro(msg string) {
+	utils.PrintItems("line", "---------------------------------------------------------------------------------")
 	color.Green("Printing out loc for sol files in directory")
 	color.HiBlue(string(msg))
+	utils.PrintItems("line", "---------------------------------------------------------------------------------")
 }

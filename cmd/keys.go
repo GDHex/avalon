@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"avalon/params"
 	"avalon/utils"
 	"crypto/rand"
 	"io/ioutil"
@@ -27,41 +28,45 @@ func init() {
 
 func newKeyPair(args []string) {
 	if len(args) != 1 {
-		color.Red("Error: please provide one argument, a name for the keypair")
+		utils.PrintItems("error", "Please provide one argument, a name for the keypair")
 		return
 	}
 	printIntro()
 
 	name := args[0]
 	pub, priv, err := ed25519.GenerateKey(rand.Reader)
-	utils.Check(err, "Error: generating keypair")
+	utils.Check(err, "Error: Generating keypair")
 
-	if utils.FileExists("keys/" + name + "_pblk.sec") {
-		color.Red("Error: File already exists, please provide a different name for the keypair")
+	if utils.FileExists(params.KeyDir + name + params.PublicKeySuffix) {
+		utils.PrintItems("error", "File already exists, please provide a different name for the keypair")
 		return
 	}
 
-	err = ioutil.WriteFile("keys/"+name+"_pblk.sec", pub, 0644)
-	utils.Check(err, "Error: trying to write public key file")
+	err = ioutil.WriteFile(params.KeyDir+name+params.PublicKeySuffix, pub, 0644)
+	utils.Check(err, "Error: Trying to write public key file")
 
-	if utils.FileExists("keys/" + name + "_prvk.sec") {
-		color.Red("Error: File already exists, please provide a different name for the keypair")
+	if utils.FileExists(params.KeyDir + name + params.PrivateKeySuffix) {
+		utils.PrintItems("error", "File already exists, please provide a different name for the keypair")
 		return
 	}
 
-	err = ioutil.WriteFile("keys/"+name+"_prvk.sec", priv, 0644)
-	utils.Check(err, "Error: trying to write private key file")
+	err = ioutil.WriteFile(params.KeyDir+name+params.PrivateKeySuffix, priv, 0644)
+	utils.Check(err, "Error: Trying to write private key file")
 
 	printOutro(pub, priv)
 }
 
 func printIntro() {
-	color.HiGreen("Welcome to Avalon Keypair Generator")
-	color.HiGreen("Creating ed25519 keypair...")
+	utils.PrintItems("line", "---------------------------------------------------------------------------------")
+	utils.PrintItems("action", "                  Welcome to Avalon Keypair Generator")
+	utils.PrintItems("line", "---------------------------------------------------------------------------------")
+	utils.PrintItems("action", "Creating ed25519 keypair...")
 }
 
 func printOutro(pub ed25519.PublicKey, priv ed25519.PrivateKey) {
-	color.Green("Done! Keys are saved under keys folder")
 	color.Blue("Public Key: %x \n", pub)
 	color.Blue("Private Key: %x \n", priv)
+	utils.PrintItems("line", "---------------------------------------------------------------------------------")
+	utils.PrintItems("success", "               Done! Keys are saved under keys folder")
+	utils.PrintItems("line", "---------------------------------------------------------------------------------")
 }
