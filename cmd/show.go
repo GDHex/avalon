@@ -40,10 +40,10 @@ func show(args []string) {
 
 func printShowIntro(user string) {
 	utils.PrintItems("line", "---------------------------------------------------------------------------------")
-	color.Green("                                 Welcome to Avalon keypair show tool")
+	utils.PrintItems("action", "                   Welcome to Avalon keypair show tool")
 	utils.PrintItems("line", "---------------------------------------------------------------------------------")
-	color.Green("Selected user : " + user)
-	color.Green("Loading keypair from files...")
+	utils.PrintItems("action", "Selected user : "+user)
+	utils.PrintItems("action", "Loading keypair from files...")
 }
 
 func printShowOutro(pub ed25519.PublicKey, priv ed25519.PrivateKey) {

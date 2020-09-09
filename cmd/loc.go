@@ -38,14 +38,14 @@ func getLoc(args []string) {
 
 func printLocIntro() {
 	utils.PrintItems("line", "---------------------------------------------------------------------------------")
-	color.Green("                                 Welcome to Avalon lines of code counter")
+	utils.PrintItems("action", "                Welcome to Avalon lines of code counter")
 	utils.PrintItems("line", "---------------------------------------------------------------------------------")
-	color.Green("Counting lines of code...")
+	utils.PrintItems("action", "Counting lines of code...")
 }
 
 func printLocOutro(msg string) {
 	utils.PrintItems("line", "---------------------------------------------------------------------------------")
-	color.Green("Printing out loc for sol files in directory")
+	utils.PrintItems("action", "Printing out loc for sol files in directory")
 	color.HiBlue(string(msg))
 	utils.PrintItems("line", "---------------------------------------------------------------------------------")
 }
