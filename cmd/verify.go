@@ -36,6 +36,7 @@ func verify(args []string) {
 	var err error
 	pubKey, err = ioutil.ReadFile(args[0])
 	utils.Check(err, "Error: Cant read public key file")
+	utils.ValidatePublicKey(pubKey)
 
 	input := args[1]
 	fi, err := os.Stat(input)
@@ -63,6 +64,8 @@ func verify(args []string) {
 
 	sig, err := ioutil.ReadFile(args[2])
 	utils.Check(err, "Error: Cant read signature file")
+	utils.ValidateSignature(sig)
+
 	out := ed25519.Verify(pubKey, data, sig)
 	color.HiBlue("Public Key: %x \n", pubKey)
 	printVerifyOutro(len(data), sig, out)

@@ -50,6 +50,7 @@ func batchSign(args []string) {
 	var err error
 	privKey, err = ioutil.ReadFile(args[0])
 	utils.Check(err, "Error: trying to read private key file")
+	utils.ValidatePrivateKey(privKey)
 
 	input := args[1]
 	fi, err := os.Stat(input)

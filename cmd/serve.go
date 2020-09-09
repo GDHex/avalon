@@ -62,10 +62,12 @@ func serve(args []string) {
 			publicKeyFile, err := publicKeyHeader[0].Open()
 			utils.Check(err, "Error: trying to open the public key uploaded file")
 			publicKey, err := ioutil.ReadAll(publicKeyFile)
+			utils.ValidatePublicKey(publicKey)
 			utils.Check(err, "Error: trying to read the public key uploaded file")
 			signatureFile, err := signatureHeader[0].Open()
 			utils.Check(err, "Error: trying to open the signature uploaded file")
 			signature, err := ioutil.ReadAll(signatureFile)
+			utils.ValidateSignature(signature)
 			utils.Check(err, "Error: trying to read the signature uploaded file")
 			if !verifyJSON(publicKey, data, signature) {
 				return

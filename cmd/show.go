@@ -32,15 +32,17 @@ func show(args []string) {
 	printShowIntro(args[0])
 	pubKey, err := ioutil.ReadFile(params.KeyDir + args[0] + params.PublicKeySuffix)
 	utils.Check(err, "Error: trying to read the public key file")
+	utils.ValidatePublicKey(pubKey)
 	privKey, errp := ioutil.ReadFile(params.KeyDir + args[0] + params.PrivateKeySuffix)
 	utils.Check(errp, "Error: trying to read the public key file")
+	utils.ValidatePrivateKey(privKey)
 
 	printShowOutro(pubKey, privKey)
 }
 
 func printShowIntro(user string) {
 	utils.PrintItems("line", "---------------------------------------------------------------------------------")
-	utils.PrintItems("action", "                   Welcome to Avalon keypair show tool")
+	utils.PrintItems("action", "                       Welcome to Avalon keypair show tool")
 	utils.PrintItems("line", "---------------------------------------------------------------------------------")
 	utils.PrintItems("action", "Selected user : "+user)
 	utils.PrintItems("action", "Loading keypair from files...")

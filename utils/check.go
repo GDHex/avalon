@@ -21,3 +21,24 @@ func Check(err error, msg string) {
 	color.Red("Inner Error: " + err.Error())
 	os.Exit(1)
 }
+
+func ValidatePublicKey(key []byte) {
+	if len(key) != 32 {
+		PrintItems("error", "Public key lenght is not correct")
+		os.Exit(1)
+	}
+}
+
+func ValidatePrivateKey(key []byte) {
+	if len(key) != 64 {
+		PrintItems("error", "Private key lenght is not correct")
+		os.Exit(1)
+	}
+}
+
+func ValidateSignature(sig []byte) {
+	if len(sig) != 64 {
+		PrintItems("error", "Signature lenght is not correct")
+		os.Exit(1)
+	}
+}
