@@ -26,8 +26,8 @@ func init() {
 }
 
 func verify(args []string) {
-	if len(args) < 2 {
-		color.Red("Error: Please provide some arguments")
+	if len(args) != 3 {
+		color.Red("Error: Please provide three arguments, the public key, the data and the signature")
 		return
 	}
 	printVerifyIntro()

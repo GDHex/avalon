@@ -26,8 +26,8 @@ func init() {
 }
 
 func sign(args []string) {
-	if len(args) < 1 {
-		color.Red("Error: Please provide at least two arguments, the private key file and the data to sign")
+	if len(args) != 2 {
+		color.Red("Error: Please provide two arguments, the private key file and the data to sign")
 		os.Exit(1)
 	}
 	printSignIntro()
@@ -47,7 +47,7 @@ func sign(args []string) {
 		dir, errd := ioutil.ReadDir(input)
 		utils.Check(errd, "Error: trying to read directory")
 		for _, file := range dir {
-			if strings.Contains(file.Name(), ".sol") || strings.Contains(file.Name(), ".pdf") {
+			if strings.Contains(file.Name(), ".sol") || strings.Contains(file.Name(), ".pdf") { // TODO add types here
 				color.HiYellow("Info: Found sol file: ", input+file.Name())
 				b, errb := ioutil.ReadFile(input + file.Name())
 				utils.Check(errb, "Error: trying to read from files in the directory")

@@ -26,7 +26,7 @@ func init() {
 }
 
 func newKeyPair(args []string) {
-	if len(args) == 0 {
+	if len(args) != 1 {
 		color.Red("Error: please provide one argument, a name for the keypair")
 		return
 	}

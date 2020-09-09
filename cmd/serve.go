@@ -34,7 +34,7 @@ type payload struct {
 }
 
 func serve(args []string) {
-	if len(args) == 0 {
+	if len(args) != 1 {
 		fmt.Println("Please provide a argument for port")
 		return
 	}

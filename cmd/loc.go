@@ -24,7 +24,7 @@ func init() {
 }
 
 func getLoc(args []string) {
-	if len(args) == 0 {
+	if len(args) != 1 {
 		color.Red("Error: please provide a name for the keys")
 		return
 	}
