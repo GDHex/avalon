@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"avalon/utils"
 	"fmt"
 	"os"
 
@@ -44,6 +45,7 @@ func init() {
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	checkDirs()
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -69,5 +71,20 @@ func initConfig() {
 	// If a config file is found, read it in.
 	if err := viper.ReadInConfig(); err == nil {
 		fmt.Println("Using config file:", viper.ConfigFileUsed())
+	}
+}
+
+func checkDirs() {
+	if !utils.DirectoryExists("keys") {
+		color.Red("Error: directory keys is missing, please run make install")
+		os.Exit(1)
+	}
+	if !utils.DirectoryExists("data") {
+		color.Red("Error: directory data is missing, please run make install")
+		os.Exit(1)
+	}
+	if !utils.DirectoryExists("signatures") {
+		color.Red("Error: directory signatures is missing, please run make install")
+		os.Exit(1)
 	}
 }

@@ -10,3 +10,11 @@ func FileExists(filename string) bool {
 	}
 	return !info.IsDir()
 }
+
+// DirectoryExists returns true if a directory under the path is present
+func DirectoryExists(path string) bool {
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		return false
+	}
+	return true
+}
