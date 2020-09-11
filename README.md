@@ -31,7 +31,7 @@ make install
 ### Verify the signature 
 
 ```bash
-./avalon verify <public-key file> <file or directory> <signarure>
+./avalon verify <public-key file> <file or directory> <signature>
 ```
 
 ### Print Locs for file or directory of files
