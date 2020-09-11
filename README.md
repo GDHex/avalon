@@ -83,7 +83,7 @@ Use "avalon [command] --help" for more information about a command.
 ### Start the service 
 
 ```bash
-./avalon server 3000
+./avalon serve 3000
 ```
 
 ### Run the following command to verify via the service 
