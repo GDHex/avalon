@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"log"
 	"strconv"
+	"time"
 
 	"github.com/gofiber/fiber"
 	"github.com/spf13/cobra"
@@ -27,12 +28,6 @@ func init() {
 	rootCmd.AddCommand(serveCmd)
 }
 
-type payload struct {
-	PubKey    []byte `json:"pubkey"`
-	Data      []byte `json:"data"`
-	Signature []byte `json:"sig"`
-}
-
 func serve(args []string) {
 	if len(args) != 1 {
 		utils.PrintItems("error", "Please provide a argument for port")
@@ -43,7 +38,7 @@ func serve(args []string) {
 	app.Post("/verify", func(c *fiber.Ctx) {
 		if form, err := c.MultipartForm(); err == nil {
 			if form.File["pubkey"] == nil || form.File["sig"] == nil || form.File["data"] == nil {
-				utils.PrintItems("error", "Please provide all the data needed to procced")
+				utils.PrintItems("error", "Please provide all the data needed to procced, public key, data and the signature to check against")
 				return
 			}
 			publicKeyHeader := form.File["pubkey"]
@@ -62,14 +57,14 @@ func serve(args []string) {
 			publicKeyFile, err := publicKeyHeader[0].Open()
 			utils.Check(err, "Error: trying to open the public key uploaded file")
 			publicKey, err := ioutil.ReadAll(publicKeyFile)
-			utils.ValidatePublicKey(publicKey)
 			utils.Check(err, "Error: trying to read the public key uploaded file")
 			signatureFile, err := signatureHeader[0].Open()
 			utils.Check(err, "Error: trying to open the signature uploaded file")
 			signature, err := ioutil.ReadAll(signatureFile)
-			utils.ValidateSignature(signature)
 			utils.Check(err, "Error: trying to read the signature uploaded file")
 			if !verifyJSON(publicKey, data, signature) {
+				c.Send("Failed to verify the data provided, please check the inputs")
+				time.Sleep(1000 * time.Millisecond)
 				return
 			}
 			b := ed25519.Verify(publicKey, data, signature)
@@ -85,7 +80,6 @@ func serve(args []string) {
 
 // TODO
 func verifyJSON(pub, data, sig []byte) bool {
-	fmt.Println(len(pub), len(data), len(sig))
 	if len(pub) != 32 {
 		fmt.Println("Public Key is not correct")
 		return false
