@@ -1,6 +1,8 @@
 package utils
 
 import (
+	"avalon/params"
+	"errors"
 	"os"
 	"strings"
 
@@ -22,6 +24,7 @@ func Check(err error, msg string) {
 	os.Exit(1)
 }
 
+// ValidatePublicKey validates a public key
 func ValidatePublicKey(key []byte) {
 	if len(key) != 32 {
 		PrintItems("error", "Public key lenght is not correct")
@@ -29,6 +32,7 @@ func ValidatePublicKey(key []byte) {
 	}
 }
 
+// ValidatePrivateKey validates a private key
 func ValidatePrivateKey(key []byte) {
 	if len(key) != 64 {
 		PrintItems("error", "Private key lenght is not correct")
@@ -36,9 +40,20 @@ func ValidatePrivateKey(key []byte) {
 	}
 }
 
+// ValidateSignature validates a signature
 func ValidateSignature(sig []byte) {
 	if len(sig) != 64 {
 		PrintItems("error", "Signature lenght is not correct")
 		os.Exit(1)
 	}
+}
+
+// ValidateFileInput validates a file input
+func ValidateFileInput(src string) error {
+	err := errors.New("Error: Illegal input for filename")
+	if !strings.Contains(src, params.Sol) || !strings.Contains(src, params.Pdf) {
+		return err
+	}
+
+	return nil
 }

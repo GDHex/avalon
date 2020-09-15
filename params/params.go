@@ -4,15 +4,24 @@ package params
 const MaxDataSize int = 1000000
 
 const (
+	// Sol = Solidity
 	Sol = ".sol"
+	// Pdf = Reports
 	Pdf = ".pdf"
 
-	KeyDir       = "./keys/"
-	DataDir      = "./data/"
+	// KeyDir is the directory that keypair is stored
+	KeyDir = "./keys/"
+	// DataDir is the directory that the data is stored
+	DataDir = "./data/"
+	// SignatureDir is the directory that signatures is stored
 	SignatureDir = "./signatures/"
-	DirPrefix    = "./data/"
+	// DirPrefix is a helper for the moment
+	DirPrefix = "./data/"
 
-	PublicKeySuffix  = "_pblk.sec"
+	// PublicKeySuffix is the filename extension for the public keys
+	PublicKeySuffix = "_pblk.sec"
+	// PrivateKeySuffix is the filename extension for the private keys
 	PrivateKeySuffix = "_prvk.sec"
-	SignatureSuffix  = "_sig.sec"
+	// SignatureSuffix is the filename extension for the signatures
+	SignatureSuffix = "_sig.sec"
 )

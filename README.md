@@ -5,7 +5,9 @@
 #### by [Georgios Delkos](georgios.delkos@certik.io) for [CertiK](certik.io) Auditing Team 2020 
 
 ## Disclaimer
-This is a WIP and could be buggy. For the moment it will work with any file for single file signing and with sol and pdf files in directory mode.
+This is a WIP and could be buggy. For the moment it will work with any file for sigle file signing and with sol files in directory mode.
+
+Files have to be for the moment in the respective folders /keys, /data, /signatures.
 
 ## Getting Started
 
@@ -31,7 +33,7 @@ make install
 ### Verify the signature 
 
 ```bash
-./avalon verify <public-key file> <file or directory> <signature>
+./avalon verify <public-key file> <file or directory> <signarure>
 ```
 
 ### Print Locs for file or directory of files
@@ -65,7 +67,7 @@ Available Commands:
   gen-keys    Gen-keys will return a ed25519 keypair
   help        Help about any command
   loc         Loc will return lines of code of the codebase in directory
-  serve       Serve will spawn a local service to the given port.
+  serve       Serve starts a service given a port number
   show        Show will load private and public key from files and show them in a hex format
   sign        Create a signature from a collection of data signed with a private key
   verify      Verify a signature against a public key and data
@@ -78,23 +80,7 @@ Flags:
 Use "avalon [command] --help" for more information about a command.
 ```
 
-## Verify a signature using Avalon
-
-### Start the service 
-
-```bash
-./avalon serve 3000
-```
-
-### Run the following command to verify via the service 
-
-```bash
-curl --location --request POST 'localhost:3000/verify' \
---form 'pubkey=@/path/to/file' \
---form 'data=@/path/to/file' \
---form 'sig=@/path/to/file'
-```
-
 ### TODO
-* Create types for files types(Sol, Rs, Go, Js etc)
-* Create a API
+* Create types for files types(Sol, Rs, Go, Js etc).
+* Fix file importing from any location.
+* Improve security.

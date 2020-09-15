@@ -30,6 +30,9 @@ func getLoc(args []string) {
 	}
 	printLocIntro()
 	input := args[0]
+	err := utils.ValidateFileInput(input)
+	utils.Check(err, err.Error())
+
 	command := exec.Command("bash", "-c", "/usr/bin/find "+input+" -name '*.sol' | xargs wc -l | sort -nr") // Just sol for the moment
 	stdout, err := command.Output()
 	utils.Check(err, "Error: Trying to run command")
