@@ -51,7 +51,7 @@ func serve(args []string) {
 				utils.Check(err, "Error: trying to open the uploaded file")
 				x, err := ioutil.ReadAll(b)
 				utils.Check(err, "Error: trying to read the uploaded file")
-				data = append(data[:], x...)
+				data = append(data, x...)
 			}
 
 			publicKeyFile, err := publicKeyHeader[0].Open()

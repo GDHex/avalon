@@ -56,7 +56,7 @@ func sign(args []string) {
 				utils.PrintItems("info", "Found sol file: "+file.Name())
 				b, errb := ioutil.ReadFile(input + file.Name())
 				utils.Check(errb, "Error: trying to read from files in the directory")
-				bytecode = append(bytecode[:], b...)
+				bytecode = append(bytecode, b...)
 			}
 		}
 	case mode.IsRegular():

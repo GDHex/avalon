@@ -56,7 +56,7 @@ func verify(args []string) {
 				utils.PrintItems("info", "Found sol file: "+file.Name())
 				b, errb := ioutil.ReadFile(input + file.Name())
 				utils.Check(errb, "Error: trying to read from files in the directory")
-				data = append(data[:], b...)
+				data = append(data, b...)
 			}
 		}
 	case mode.IsRegular():
