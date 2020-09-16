@@ -1,8 +1,6 @@
 package utils
 
 import (
-	"avalon/params"
-	"errors"
 	"os"
 	"strings"
 
@@ -50,10 +48,10 @@ func ValidateSignature(sig []byte) {
 
 // ValidateFileInput validates a file input
 func ValidateFileInput(src string) error {
-	err := errors.New("Error: Illegal input for filename")
-	if !strings.Contains(src, params.Sol) || !strings.Contains(src, params.Pdf) {
-		return err
-	}
+	// err := errors.New("Error: Illegal input for filename")
+	// if !strings.Contains(src, params.Sol) || !strings.Contains(src, params.Pdf) {
+	// 	return err
+	// }
 
 	return nil
 }
