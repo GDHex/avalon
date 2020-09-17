@@ -53,6 +53,9 @@ func batchSign(args []string) {
 	utils.ValidatePrivateKey(privKey)
 
 	input := args[1]
+	err = utils.ValidateFileInput(input)
+	utils.Check(err, "Error: Filetype not supported")
+
 	fi, err := os.Stat(input)
 	utils.Check(err, "Error: trying to parse the directory name")
 

@@ -4,6 +4,7 @@ go 1.15
 
 require (
 	4d63.com/gochecknoinits v0.0.0-20200108094044-eb73b47b9fc4 // indirect
+	github.com/Workiva/go-datastructures v1.0.52
 	github.com/alexkohler/nakedret v1.0.0 // indirect
 	github.com/davecgh/go-spew v1.1.1
 	github.com/fatih/color v1.9.0

@@ -39,8 +39,8 @@ func verify(args []string) {
 	utils.ValidatePublicKey(pubKey)
 
 	input := args[1]
-	// err = utils.ValidateFileInput(input)
-	// utils.Check(err, err.Error())
+	err = utils.ValidateFileInput(input)
+	utils.Check(err, "Error: Filetype not supported")
 
 	fi, err := os.Stat(input)
 	utils.Check(err, "Error: Trying to parse the file or directory name")

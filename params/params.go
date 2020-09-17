@@ -25,3 +25,6 @@ const (
 	// SignatureSuffix is the filename extension for the signatures
 	SignatureSuffix = "_sig.sec"
 )
+
+// FileTypes represents all the types that avalon can parse
+var FileTypes = []string{Sol, Pdf}
