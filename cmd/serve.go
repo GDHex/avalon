@@ -9,7 +9,6 @@ import (
 	"log"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/gofiber/fiber"
 	"github.com/spf13/cobra"
@@ -30,6 +29,8 @@ func init() {
 	rootCmd.AddCommand(serveCmd)
 }
 
+// This is legacy probably
+/*
 func serve(args []string) {
 	if len(args) != 1 {
 		utils.PrintItems("error", "Please provide a argument for port")
@@ -79,6 +80,7 @@ func serve(args []string) {
 	utils.Check(err, "Error: trying to parse port")
 	log.Fatal(app.Listen(port))
 }
+*/
 
 func serveData(args []string) {
 	if len(args) != 1 {
