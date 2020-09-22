@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"log"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gofiber/fiber"
@@ -20,7 +21,8 @@ var serveCmd = &cobra.Command{
 	Short: "Serve starts a service given a port number",
 	Long:  `Serve starts a service given a port number that under /verify can verify signatures against data and public key`,
 	Run: func(cmd *cobra.Command, args []string) {
-		serve(args)
+		// serve(args)
+		serveData(args)
 	},
 }
 
@@ -73,6 +75,62 @@ func serve(args []string) {
 
 	})
 
+	port, err := strconv.Atoi(args[0])
+	utils.Check(err, "Error: trying to parse port")
+	log.Fatal(app.Listen(port))
+}
+
+func serveData(args []string) {
+	if len(args) != 1 {
+		utils.PrintItems("error", "Please provide a argument for port")
+		return
+	}
+	app := fiber.New()
+	app.Post("/verify", func(c *fiber.Ctx) {
+		if form, err := c.MultipartForm(); err == nil {
+			if form.File["data"] == nil {
+				utils.PrintItems("error", "Please provide data needed to procced")
+				return
+			}
+			files := form.File["data"]
+			filename := ""
+			data := make([]byte, 0)
+			for _, file := range files {
+				b, err := file.Open()
+				utils.Check(err, "Error: trying to open the uploaded file")
+				filename = file.Filename
+				x, err := ioutil.ReadAll(b)
+				utils.Check(err, "Error: trying to read the uploaded file")
+				data = append(data, x...)
+			}
+
+			keyDirTag := "./keys/"
+			// TODO verify again data
+			publicKeyFiles, err := ioutil.ReadDir(keyDirTag)
+			utils.Check(err, "Error: trying to read the keys directory")
+
+			sigDirTag := "./signatures/"
+			signatureFiles, err := ioutil.ReadDir(sigDirTag)
+			utils.Check(err, "Error: trying to read the signatures directory")
+			for _, f := range signatureFiles {
+				fname := filename
+				fname = fname[:len(fname)-8]
+				if strings.Contains(f.Name(), fname) {
+					for _, p := range publicKeyFiles {
+						pubK, err := ioutil.ReadFile(keyDirTag + p.Name())
+						utils.Check(err, "Error: trying to read the public key file")
+						sig, err := ioutil.ReadFile(sigDirTag + f.Name())
+						utils.Check(err, "Error: trying to read the signature key file")
+						b := ed25519.Verify(pubK, data, sig)
+						c.Send("Is this file valid: ", b)
+						if b {
+							break
+						}
+					}
+				}
+			}
+		}
+	})
 	port, err := strconv.Atoi(args[0])
 	utils.Check(err, "Error: trying to parse port")
 	log.Fatal(app.Listen(port))
