@@ -2,11 +2,15 @@ package cmd
 
 import (
 	"avalon/utils"
+	"fmt"
 	"os/exec"
 
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
+
+var fileType string
 
 // keysCmd represents the keys command
 var locCmd = &cobra.Command{
@@ -20,20 +24,24 @@ var locCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(locCmd)
-
+	batchCmd.Flags().StringP("filetype", "f", fileType, "file type to scan for")
+	viper.BindPFlag("filetype", rootCmd.PersistentFlags().Lookup("filetype"))
 }
 
 func getLoc(args []string) {
-	if len(args) != 1 {
-		utils.PrintItems("error", "Please provide a name for the keys")
+	if len(args) != 3 {
+		utils.PrintItems("error", "Please provide a directory")
 		return
 	}
 	printLocIntro()
-	input := args[0]
-	err := utils.ValidateFileInput(input)
+	fileType = args[1]
+	input := args[2]
+
+	err := utils.ValidateFileInput(fileType)
 	utils.Check(err, "Error: Filetype not supported")
 
-	command := exec.Command("bash", "-c", "/usr/bin/find "+input+" -name '*.sol' | xargs wc -l | sort -nr") // Just sol for the moment
+	command := exec.Command("bash", "-c", "/usr/bin/find "+input+" -name '*"+fileType+"' | xargs wc -l | sort -nr")
+	fmt.Println(command)
 	stdout, err := command.Output()
 	utils.Check(err, "Error: Trying to run command")
 	printLocOutro(string(stdout))

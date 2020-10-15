@@ -6,6 +6,8 @@ const MaxDataSize int = 1000000
 const (
 	// Sol = Solidity
 	Sol = ".sol"
+	// Go = Golang
+	Go = ".go"
 	// Pdf = Reports
 	Pdf = ".pdf"
 
@@ -27,4 +29,4 @@ const (
 )
 
 // FileTypes represents all the types that avalon can parse
-var FileTypes = []string{Sol, Pdf}
+var FileTypes = []string{Sol, Pdf, Go}

@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"avalon/params"
 	"avalon/utils"
 	"crypto/ed25519"
 	"fmt"
@@ -98,25 +97,4 @@ func serve(args []string) {
 	port, err := strconv.Atoi(args[0])
 	utils.Check(err, "Error: trying to parse port")
 	log.Fatal(app.Listen(port))
-}
-
-// TODO
-func verifyJSON(pub, data, sig []byte) bool {
-	if len(pub) != 32 {
-		fmt.Println("Public Key is not correct")
-		return false
-	}
-	if len(data) == 0 {
-		fmt.Println("No Data to process")
-		return false
-	}
-	if len(data) > params.MaxDataSize {
-		fmt.Println("Data is to big to verify")
-		return false
-	}
-	if len(sig) != 64 {
-		fmt.Println("Signature is not correct")
-		return false
-	}
-	return true
 }

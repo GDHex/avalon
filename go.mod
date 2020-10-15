@@ -3,6 +3,7 @@ module avalon
 go 1.15
 
 require (
+	4d63.com/gochecknoglobals v0.0.0-20200924065721-6443f1912fff // indirect
 	4d63.com/gochecknoinits v0.0.0-20200108094044-eb73b47b9fc4 // indirect
 	github.com/Workiva/go-datastructures v1.0.52
 	github.com/alexkohler/nakedret v1.0.0 // indirect
@@ -11,6 +12,7 @@ require (
 	github.com/gofiber/fiber v1.14.5
 	github.com/gordonklaus/ineffassign v0.0.0-20200809085317-e36bfde3bb78 // indirect
 	github.com/gorilla/schema v1.2.0 // indirect
+	github.com/jgautheron/goconst v0.0.0-20200920201509-8f5268ce89d5 // indirect
 	github.com/klauspost/compress v1.10.11 // indirect
 	github.com/mdempsky/maligned v0.0.0-20180708014732-6e39bd26a8c8 // indirect
 	github.com/mitchellh/go-homedir v1.1.0

@@ -39,8 +39,9 @@ make install
 ### Print Locs for file or directory of files
 
 ```bash
-./avalon loc <directory>
+./avalon loc typefile <type> <directory>
 ```
+Type can be .sol .go .rs and so on
 
 ### Serve starts a service on the given port that can verify signatures against data and public key 
 
@@ -67,7 +68,7 @@ Available Commands:
   gen-keys    Gen-keys will return a ed25519 keypair
   help        Help about any command
   loc         Loc will return lines of code of the codebase in directory
-  serve       Serve starts a service given a port number
+  serve       Serve starts a service given a port number you can access it via index.html
   show        Show will load private and public key from files and show them in a hex format
   sign        Create a signature from a collection of data signed with a private key
   verify      Verify a signature against a public key and data
