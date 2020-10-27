@@ -3,14 +3,8 @@ package params
 // MaxDataSize represents the max data to be allowed to verified
 const MaxDataSize int = 1000000
 
+// File Directory related
 const (
-	// Sol = Solidity
-	Sol = ".sol"
-	// Go = Golang
-	Go = ".go"
-	// Pdf = Reports
-	Pdf = ".pdf"
-
 	// KeyDir is the directory that keypair is stored
 	KeyDir = "./keys/"
 	// DataDir is the directory that the data is stored
@@ -30,3 +24,13 @@ const (
 
 // FileTypes represents all the types that avalon can parse
 var FileTypes = []string{Sol, Pdf, Go}
+
+// File Types
+const (
+	// Sol = Solidity
+	Sol = ".sol"
+	// Go = Golang
+	Go = ".go"
+	// Pdf = Reports
+	Pdf = ".pdf"
+)
